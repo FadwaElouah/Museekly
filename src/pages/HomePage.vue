@@ -24,15 +24,18 @@ export default {
       search: '',
       lyrics: '',
       errorMessage: '',
+      isLoading: false, 
     };
   },
   methods: {
     async searchLyrics() {
+    this.isLoading = true;
       const [artist, title] = this.search.split(' - ');
 
       if (!artist || !title) {
         this.errorMessage = "Merci d'écrire la chanson sous forme: artiste - titre.";
         this.lyrics = '';
+        this.isLoading = false;
         return;
       }
 
@@ -50,7 +53,9 @@ export default {
       } catch (error) {
         this.errorMessage = "Erreur de connexion. Veuillez réessayer.";
         this.lyrics = '';
+     
       }
+       this.isLoading = false; 
     }
   }
 };
