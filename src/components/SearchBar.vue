@@ -18,6 +18,7 @@ export default {
 </script>
 
 <style scoped>
+
 .search-input {
   padding: 0.8rem 1rem;
   width: 80%;
@@ -26,6 +27,8 @@ export default {
   border: none;
   font-size: 1rem;
 }
+
+
 
 .search-btn {
   padding: 0.7rem 1.5rem;
@@ -36,7 +39,9 @@ export default {
   border-radius: 8px;
   cursor: pointer;
   transition: 0.3s ease;
+  margin-top: 20px;
 }
+
 
 .search-btn:hover {
   background-color: #ff5722;
