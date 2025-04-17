@@ -73,14 +73,35 @@ export default {
 </script>
 
 <style scoped>
-/* Your styles go here */
 .home {
-  min-height: 100vh;
+  width: 1900px; /* 👈 العرض ثابت */
+  height: 100vh;
+  margin: 0 auto; /* باش تبقى فوسط الشاشة */
   background: linear-gradient(135deg, #1e1e2f, #3b3b98);
   color: #fff;
-  text-align: center;
   padding: 2rem;
   font-family: 'Segoe UI', sans-serif;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.main {
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 3rem;
+  border-radius: 15px;
+  width: 1000px; 
+  max-width: 1000px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  margin:auto;
+  margin-top:100px;
 }
 
 .header .title {
@@ -94,17 +115,9 @@ export default {
   color: #dcdcdc;
 }
 
-.main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-}
-
 .search-input {
   padding: 0.8rem 1rem;
-  width: 80%;
-  max-width: 400px;
+  width: 500px; /* 👈 حجم ثابت */
   border-radius: 10px;
   border: none;
   font-size: 1rem;
@@ -125,24 +138,22 @@ export default {
   background-color: #ff5722;
 }
 
-/* Style for lyrics display */
 .lyrics {
   margin-top: 2rem;
   padding: 1rem;
   background-color: #fff;
   color: #333;
   border-radius: 8px;
-  width: 80%;
-  max-width: 600px;
+  width: 700px;
   text-align: left;
   white-space: pre-wrap;
   word-wrap: break-word;
 }
 
-/* Style for error messages */
 .error-message {
   margin-top: 2rem;
   color: red;
   font-size: 1.1rem;
 }
+
 </style>
