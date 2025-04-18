@@ -35,6 +35,8 @@ export default {
         `https://api.lyrics.ovh/v1/${this.artist}/${this.title}`
       );
       const data = await res.json();
+      
+    console.log('ARTIST:', artist, 'TITLE:', title); 
       if (data.lyrics) {
         this.lyrics = data.lyrics;
       } else {
