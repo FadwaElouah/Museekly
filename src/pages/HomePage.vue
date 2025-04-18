@@ -13,11 +13,7 @@
         @search="searchLyrics"
       />
 
-      <!-- Affichage des résultats -->
-      <SearchResults
-        :lyrics="lyrics"
-        :errorMessage="errorMessage"
-      />
+      <SearchResults :searchTerm="search" />
        <!-- Affichage des paroles -->
   <LyricsDisplay
     :lyrics="lyrics"
