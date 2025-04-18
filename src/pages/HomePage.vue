@@ -1,25 +1,26 @@
 <template>
-  <div class="home">
-    <header class="header">
-      <h1 class="title">🎵 Museekly 🎶</h1>
-      <p class="subtitle">Trouve facilement les paroles de tes chansons préférées...</p>
-    </header>
+  <div class="home-container">
+    <div class="home-header">
+      <h1 class="home-title">🎵 Museekly 🎶</h1>
+      <p class="home-subtitle">Trouve facilement les paroles de tes chansons préférées...</p>
+    </div>
 
-    <main class="main">
-      <!-- Ici, on insère SearchBar et on lui passe "disabled" et "v-model" -->
+    <div class="home-main">
       <SearchBar
         v-model="search"
         :disabled="isLoading"
         @search="searchLyrics"
+        class="search-bar"
       />
 
-      <SearchResults :searchTerm="search" />
-       <!-- Affichage des paroles -->
-  <LyricsDisplay
-    :lyrics="lyrics"
-    :errorMessage="errorMessage"
-  />
-    </main>
+      <SearchResults :searchTerm="search" class="search-results"/>
+
+      <LyricsDisplay
+        :lyrics="lyrics"
+        :errorMessage="errorMessage"
+        class="lyrics-display"
+      />
+    </div>
   </div>
 </template>
 
@@ -30,72 +31,90 @@ import LyricsDisplay from '../components/LyricsDisplay.vue';
 
 export default {
   components: { SearchBar, SearchResults, LyricsDisplay },
-
   data() {
     return {
       search: '',
       lyrics: '',
       errorMessage: '',
-      isLoading: false,    // ← État de chargement
+      isLoading: false
     };
   },
   methods: {
     async searchLyrics() {
-      this.isLoading = true;    // ← Début du chargement
+      this.isLoading = true;
       this.errorMessage = '';
       this.lyrics = '';
 
       const [artist, title] = this.search.split(' - ');
       if (!artist || !title) {
         this.errorMessage = 'Tu dois écrire : artiste - titre de la chanson';
-        this.isLoading = false;  // ← Fin du chargement
+        this.isLoading = false;
         return;
       }
 
       try {
-        const res = await fetch(`https://api.lyrics.ovh/v1/${artist}/${title}`);
+        const res = await fetch(
+          `https://api.lyrics.ovh/v1/${encodeURIComponent(artist)}/${encodeURIComponent(title)}`
+        );
         const data = await res.json();
-        if (data.lyrics) {
-          this.lyrics = data.lyrics;
-        } else {
-          this.errorMessage = 'Paroles introuvables pour cette chanson.';
-        }
-      } catch (e) {
+        if (data.lyrics) this.lyrics = data.lyrics;
+        else this.errorMessage = 'Paroles introuvables pour cette chanson.';
+      } catch {
         this.errorMessage = 'Problème de connexion, réessaie plus tard.';
       }
 
-      this.isLoading = false;   // ← Fin du chargement
+      this.isLoading = false;
     }
   }
 };
 </script>
 
 <style scoped>
-.home {
-  min-height: 100vh;
-  width: 1200px;
-  margin: 0 auto;
-  background: linear-gradient(135deg, #1e1e2f, #3b3b98);
-  color: #fff;
+.home-container {
+  max-width: 900px;
+  margin: 2rem auto;
   padding: 2rem;
+  background: rgba(30, 30, 47, 0.8);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  color: #fff;
   font-family: 'Segoe UI', sans-serif;
 }
 
-.header .title {
-  font-size: 3rem;
-  margin-bottom: 0.5rem;
+.home-header {
+  text-align: center;
+  margin-bottom: 2rem;
 }
 
-.header .subtitle {
-  font-size: 1.2rem;
-  margin-bottom: 1.5rem;
+.home-title {
+  font-size: 3rem;
+  margin: 0;
+  color: #ff7f50;
+}
+
+.home-subtitle {
+  font-size: 1.3rem;
+  margin: 0.5rem 0;
   color: #dcdcdc;
 }
 
-.main {
+.home-main {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 1rem;
+  gap: 1.5rem;
+}
+
+.search-bar {
+  display: flex;
+  justify-content: center;
+}
+
+.search-results {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.lyrics-display {
+  margin-top: 1rem;
 }
 </style>
