@@ -1,16 +1,24 @@
 <template>
-  <div class="song-details">
-    <img :src="$route.query.artwork" alt="Artwork" class="artwork" />
-    <h2>{{ title }} - {{ artist }}</h2>
-    <audio v-if="$route.query.preview" :src="$route.query.preview" controls></audio>
-
-    <div v-if="lyrics" class="lyrics">
-      <h3>Paroles</h3>
-      <pre>{{ lyrics }}</pre>
+  <div class="song-details-container">
+    <div class="song-header">
+      <img :src="$route.query.artwork" alt="Artwork" class="artwork" />
+      <div class="song-info">
+        <h2 class="song-title">{{ title }}</h2>
+        <p class="artist-name">{{ artist }}</p>
+        <audio v-if="$route.query.preview" :src="$route.query.preview" controls class="audio-player"></audio>
+      </div>
     </div>
 
-    <div v-else-if="errorMessage" class="error">{{ errorMessage }}</div>
-    <div v-else class="loading">⏳ Chargement des paroles...</div>
+    <div v-if="lyrics" class="lyrics-box">
+      <h3 class="lyrics-heading">Paroles</h3>
+      <pre class="lyrics-text">{{ lyrics }}</pre>
+    </div>
+
+    <div v-else-if="errorMessage" class="error-message">
+      <p>{{ errorMessage }}</p>
+    </div>
+
+    <div v-else class="loading-message">⏳ Chargement des paroles...</div>
   </div>
 </template>
 
@@ -33,22 +41,16 @@ export default {
   async mounted() {
     const artist = this.artist;
     const title = this.title;
-    // Debug logs for troubleshooting
-    console.log('🔍 Fetching lyrics for:', artist, title);
     const url = `https://api.lyrics.ovh/v1/${encodeURIComponent(artist)}/${encodeURIComponent(title)}`;
-    console.log('📡 URL:', url);
     try {
       const res = await fetch(url);
-      console.log('📶 HTTP status:', res.status, res.statusText);
       const data = await res.json();
-      console.log('📥 API response:', data);
       if (data.lyrics) {
         this.lyrics = data.lyrics;
       } else {
         this.errorMessage = 'Paroles introuvables pour cette chanson.';
       }
     } catch (e) {
-      console.error('Fetch error:', e);
       this.errorMessage = 'Erreur lors du chargement des paroles.';
     }
   },
@@ -56,35 +58,90 @@ export default {
 </script>
 
 <style scoped>
-.song-details {
-  padding: 2rem;
-  text-align: center;
+.song-details-container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 1rem;
+  background: rgba(30, 30, 47, 0.8);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
   color: #fff;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.song-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
 }
 
 .artwork {
-  width: 200px;
-  border-radius: 10px;
-  margin-bottom: 1rem;
+  width: 180px;
+  height: 180px;
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.5);
 }
 
-.lyrics {
-  white-space: pre-wrap;
-  text-align: left;
+.song-info {
+  flex: 1;
+}
+
+.song-title {
+  font-size: 2.5rem;
+  margin: 0;
+  color: #ff7f50;
+}
+
+.artist-name {
+  font-size: 1.2rem;
+  margin: 0.2rem 0 1rem;
+  color: #dcdcdc;
+}
+
+.audio-player {
+  width: 100%;
+  outline: none;
+  margin-top: 0.5rem;
+}
+
+.lyrics-box {
   background: #fff;
   color: #333;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.lyrics-heading {
+  margin-top: 0;
+  font-size: 1.8rem;
+  border-bottom: 2px solid #ff7f50;
+  padding-bottom: 0.5rem;
+  color: #1e1e2f;
+}
+
+.lyrics-text {
+  margin-top: 1rem;
+  white-space: pre-wrap;
+  line-height: 1.6;
+  font-size: 1rem;
+}
+
+.error-message {
+  background: #ff4f4f;
+  color: #fff;
   padding: 1rem;
   border-radius: 8px;
-  margin-top: 1rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
-.error {
-  color: #ff6b6b;
-  margin-top: 1rem;
-}
-
-.loading {
+.loading-message {
+  text-align: center;
+  font-size: 1.2rem;
   color: #ccc;
-  margin-top: 1rem;
+  padding: 1rem;
 }
 </style>
