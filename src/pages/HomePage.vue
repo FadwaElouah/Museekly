@@ -18,6 +18,11 @@
         :lyrics="lyrics"
         :errorMessage="errorMessage"
       />
+       <!-- Affichage des paroles -->
+  <LyricsDisplay
+    :lyrics="lyrics"
+    :errorMessage="errorMessage"
+  />
     </main>
   </div>
 </template>
@@ -25,9 +30,11 @@
 <script>
 import SearchBar from '../components/SearchBar.vue';
 import SearchResults from '../components/SearchResults.vue';
+import LyricsDisplay from '../components/LyricsDisplay.vue';
 
 export default {
-  components: { SearchBar, SearchResults },
+  components: { SearchBar, SearchResults, LyricsDisplay },
+
   data() {
     return {
       search: '',
