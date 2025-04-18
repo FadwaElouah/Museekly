@@ -2,19 +2,28 @@
   <div class="home">
     <header class="header">
       <h1 class="title">🎵 Museekly 🎶</h1>
-      <p class="subtitle">Trouve facilement les paroles de tes chansons préférées !</p>
+      <p class="subtitle">Trouve facilement les paroles de tes chansons préférées...</p>
     </header>
 
     <main class="main">
-      <SearchBar v-model="search" @search="searchLyrics" />
-      <SearchResults :lyrics="lyrics" :errorMessage="errorMessage" />
+      <!-- Ici, on insère SearchBar et on lui passe "disabled" et "v-model" -->
+      <SearchBar
+        v-model="search"
+        :disabled="isLoading"
+        @search="searchLyrics"
+      />
+
+      <!-- Affichage des résultats -->
+      <SearchResults
+        :lyrics="lyrics"
+        :errorMessage="errorMessage"
+      />
     </main>
   </div>
 </template>
 
 <script>
 import SearchBar from '../components/SearchBar.vue';
-
 import SearchResults from '../components/SearchResults.vue';
 
 export default {
@@ -24,53 +33,49 @@ export default {
       search: '',
       lyrics: '',
       errorMessage: '',
-      isLoading: false, 
+      isLoading: false,    // ← État de chargement
     };
   },
   methods: {
     async searchLyrics() {
-    this.isLoading = true;
-      const [artist, title] = this.search.split(' - ');
+      this.isLoading = true;    // ← Début du chargement
+      this.errorMessage = '';
+      this.lyrics = '';
 
+      const [artist, title] = this.search.split(' - ');
       if (!artist || !title) {
-        this.errorMessage = "Merci d'écrire la chanson sous forme: artiste - titre.";
-        this.lyrics = '';
-        this.isLoading = false;
+        this.errorMessage = 'Tu dois écrire : artiste - titre de la chanson';
+        this.isLoading = false;  // ← Fin du chargement
         return;
       }
 
       try {
         const res = await fetch(`https://api.lyrics.ovh/v1/${artist}/${title}`);
         const data = await res.json();
-
         if (data.lyrics) {
           this.lyrics = data.lyrics;
-          this.errorMessage = '';
         } else {
-          this.lyrics = '';
-          this.errorMessage = "Désolé, les paroles n'ont pas été trouvées pour cette chanson.";
+          this.errorMessage = 'Paroles introuvables pour cette chanson.';
         }
-      } catch (error) {
-        this.errorMessage = "Erreur de connexion. Veuillez réessayer.";
-        this.lyrics = '';
-     
+      } catch (e) {
+        this.errorMessage = 'Problème de connexion, réessaie plus tard.';
       }
-       this.isLoading = false; 
+
+      this.isLoading = false;   // ← Fin du chargement
     }
   }
 };
 </script>
 
 <style scoped>
-/* Styles comme avant */
 .home {
   min-height: 100vh;
   width: 1200px;
+  margin: 0 auto;
   background: linear-gradient(135deg, #1e1e2f, #3b3b98);
   color: #fff;
   padding: 2rem;
   font-family: 'Segoe UI', sans-serif;
-  margin: 0 auto;
 }
 
 .header .title {
@@ -79,8 +84,8 @@ export default {
 }
 
 .header .subtitle {
-  font-size: 1.3rem;
-  margin-bottom: 2rem;
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
   color: #dcdcdc;
 }
 
