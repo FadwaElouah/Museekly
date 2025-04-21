@@ -65,6 +65,7 @@ export default {
         query: {
           preview: song.previewUrl,
           artwork: song.artworkUrl100,
+           album: song.collectionName,
         },
       });
     },
