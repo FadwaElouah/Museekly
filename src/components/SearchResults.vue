@@ -67,6 +67,7 @@ export default {
           artwork: song.artworkUrl100,
            album: song.collectionName,
            releaseDate: song.releaseDate,
+            genre: song.primaryGenreName
         },
       });
     },
