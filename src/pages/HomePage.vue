@@ -1,7 +1,7 @@
 <template>
   <div class="home-container">
     <div class="home-header">
-      <h1 class="home-title">🎵 Museekly 🎶</h1>
+      <h1 class="home-title">   <span class="note-icon emoji">🎵</span> Museekly <span class="note-icon emoji">🎶</span></h1>
       <p class="home-subtitle">Trouve facilement les paroles de tes chansons préférées...</p>
     </div>
 
@@ -70,6 +70,16 @@ export default {
 </script>
 
 <style scoped>
+.note-icon {
+
+  color: #ff7f50;
+
+  margin: 0 0.5rem;
+}
+.emoji {
+  font-size: 2.5rem;
+  filter: hue-rotate(30deg) brightness(1.5);
+}
 .home-container {
   max-width: 900px;
   margin: 2rem auto;
@@ -80,6 +90,7 @@ export default {
   color: #fff;
   font-family: 'Segoe UI', sans-serif;
 }
+
 
 .home-header {
   text-align: center;

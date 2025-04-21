@@ -78,6 +78,7 @@ export default {
 </script>
 
 <style scoped>
+
 .results {
   margin-top: 20px;
 }
@@ -92,4 +93,6 @@ export default {
 .song-card:hover {
   background-color: #f0f0f0;
 }
+
+
 </style>
